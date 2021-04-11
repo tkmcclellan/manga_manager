@@ -46,7 +46,7 @@ setup(
     license="MIT license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords='manga_manager',
+    keywords=['manga_manager', 'manga-manager', 'manga', 'manga-scraper', 'manga-reader', 'mangakakalot', 'manga-downloader'],
     name='manga_manager',
     packages=find_packages(include=['manga_manager', 'manga_manager.*']),
     setup_requires=setup_requirements,

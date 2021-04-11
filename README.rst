@@ -51,6 +51,7 @@ Installation
 ------------
 
 Using pip:
+
 .. code-block:: console
 
         $ python -m pip install manga_manager
