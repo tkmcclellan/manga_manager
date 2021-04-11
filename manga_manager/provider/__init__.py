@@ -1,0 +1,1 @@
+from manga_manager.provider.mangakakalot import Mangakakalot

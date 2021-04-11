@@ -85,7 +85,7 @@ Ready to contribute? Here's how to set up `manga_manager` for local development.
 
    To get flake8 and tox, just pip install them into your virtualenv.
 
-6. Commit your changes and push your branch to GitHub::
+6. Commit your changes and push your branch to GitHub. Ensure that the pull request has only one commit::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
