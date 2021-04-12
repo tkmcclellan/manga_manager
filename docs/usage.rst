@@ -2,7 +2,7 @@
 Usage
 =====
 
-manga_manager has four (4) commands: ``add``, ``remove``, ``edit``, and ``read``.
+manga_manager has five (5) commands: ``list``, ``add``, ``remove``, ``edit``, and ``read``.
 
 Commands can be issued directly from the command line, or, by simply entering ``manga``, manga_manager
 will open its starting menu where commands can be issued repeatedly. Users can exit the menu by
@@ -13,6 +13,14 @@ entering ``quit`` or Ctrl-c.
     $ manga
 
 When using commands from the menu, the script name ``manga`` does not need to be used.
+
+List
+----
+``list`` lists the manga tracked by manga_manager. To list manga, enter:
+
+.. code-block:: console
+
+    $ manga list
 
 
 Add

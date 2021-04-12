@@ -1,3 +1,11 @@
+"""
+TODO:
+- Add support for MangaReader
+- Make multithreaded downloading optional
+- Make classes for Manga, Chapter, SearchResult, etc.
+"""
+
+
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -144,11 +152,10 @@ def edit_manga(title):
 
     manga = config["manga"][title]
 
-    for key, value in manga.items():
-        if key != "chapters":
-            print(f"{key} = {value}")
-
     while True:
+        for key, value in manga.items():
+            if key != "chapters":
+                print(f"{key} = {value}")
         key = input("What config do you want to change? (q - Quit): ").lower()
         if key == "q":
             break
@@ -245,7 +252,7 @@ def read_manga(title, chapter=None):
         return
 
 
-def list_manga(new_chapters):
+def list_manga(new_chapters={}):
     """Lists the manga currently being tracked by manga_manager"""
 
     if len(config["manga"].items()) == 0:
@@ -283,6 +290,14 @@ def _new_chapter_check(manga, new_chapters):
                 new_chapters[manga["name"]] = 1
 
 
+def new_chapters():
+    new_chapters = {}
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for manga in config["manga"].values():
+            executor.submit(_new_chapter_check, manga, new_chapters)
+    return new_chapters
+
+
 def print_separator():
     """Prints a separator line"""
 
@@ -308,13 +323,10 @@ def start_menu():
     """Menu for using manga_manager"""
 
     try:
-        new_chapters = {}
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            for manga in config["manga"].values():
-                executor.submit(_new_chapter_check, manga, new_chapters)
+        new = new_chapters()
         while True:
             print_welcome()
-            list_manga(new_chapters)
+            list_manga(new)
             selection = input("> ")
             print_separator()
             parser = argument_parser()

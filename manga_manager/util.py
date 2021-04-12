@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 
 def argument_parser():
     parser = ArgumentParser()
-    parser.add_argument("action", choices=["add", "remove", "edit", "read", "quit"])
+    parser.add_argument("action", choices=["add", "remove", "edit", "read", "list", "quit"])
     parser.add_argument("title", nargs="*")
     parser.add_argument("-c", "--chapters", required=False)
     parser.add_argument(

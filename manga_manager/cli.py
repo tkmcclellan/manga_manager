@@ -1,18 +1,22 @@
 """Console script for manga_manager."""
 import sys
 
+from manga_manager import __version__
 import manga_manager.manga_manager as mm
 from manga_manager.util import argument_parser
+from manga_manager.provider import *
 
 
 def main():
     """Console script for manga_manager."""
     if len(sys.argv) < 2:
         mm.start_menu()
+    elif sys.argv[1] in ["-v", "--version"]:
+        print(__version__)
+        return
     else:
         parser = argument_parser()
         mm.print_welcome()
-        mm.list_manga()
 
         args = parser.parse_args()
         args.title = " ".join(args.title)
@@ -35,6 +39,8 @@ def main():
                 chapter=int(args.chapters) - 1 if args.chapters else None,
             )
             mm.save()
+        elif args.action == "list":
+            mm.list_manga(mm.new_chapters())
 
 
 if __name__ == "__main__":

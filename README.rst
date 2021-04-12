@@ -63,8 +63,8 @@ Using pip:
 Usage
 -----
 
-manga_manager has four (4) commands, ``add``, ``remove``, ``edit``, and ``read``. To get started with reading
-a manga, enter the commands:
+manga_manager has five (5) commands, ``list``, ``add``, ``remove``, ``edit``, and ``read``. To get started with reading
+a manga (for example, Attack on Titan), enter the commands:
 
 .. code-block:: console
 
