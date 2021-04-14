@@ -1,33 +1,34 @@
 import re
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
+import traceback
 
 import requests
 from bs4 import BeautifulSoup
 
 from manga_manager.provider.provider import Provider
+from manga_manager.model import SearchResult
 from manga_manager.util import chapter_filename, clean_text
 
 
 class Mangakakalot(Provider):
     name = "Mangakakalot"
 
-    def download(self, manga_name, chapters, verbose=True):
+    def download(self, title, chapters, dl_dir, verbose=True):
         thread, event = None, None
         if verbose:
-            print("\n" + manga_name.upper())
-            print(len(manga_name) * "-")
+            print("\n" + title.upper())
+            print(len(title) * "-")
             thread, event = self.downloading_animation(
-                [chapter_filename(chapter["name"]) for chapter in chapters],
-                Path(__file__).parent.parent / "manga" / manga_name,
-                len(chapters),
+                chapter_names=[chapter_filename(chapter.title) for chapter in chapters],
+                dir=dl_dir,
+                count=len(chapters),
             )
 
         paths = {}
         with ThreadPoolExecutor(max_workers=20) as executor:
             for chapter in chapters:
                 try:
-                    response = requests.get(chapter["link"])
+                    response = requests.get(chapter.link)
                     soup = BeautifulSoup(response.text, "html.parser")
                     image_links = [
                         image["data-src"] for image in soup.select("img.img-loading")
@@ -36,13 +37,13 @@ class Mangakakalot(Provider):
                     executor.submit(
                         self.manga2pdf,
                         image_links,
-                        manga_name,
-                        chapter["name"],
+                        title,
+                        chapter.title,
                         paths=paths,
                     )
-                except Exception as e:
+                except Exception:
                     if verbose:
-                        print(e)
+                        traceback.print_exc()
                     pass
         if verbose:
             event.set()
@@ -73,12 +74,12 @@ class Mangakakalot(Provider):
 
         return (
             [
-                {
-                    "title": clean_text(titles[i].text),
-                    "link": f"https://ww.mangakakalot.tv{titles[i]['href']}",
-                    "authors": authors[i],
-                    "updates": updates[i],
-                }
+                SearchResult(
+                    title=clean_text(titles[i].text),
+                    link=f"https://ww.mangakakalot.tv{titles[i]['href']}",
+                    authors=authors[i],
+                    updates=updates[i],
+                )
                 for i in range(len(titles))
             ],
             pages,

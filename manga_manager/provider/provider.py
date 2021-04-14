@@ -92,16 +92,17 @@ class Provider:
             os.mkdir(path / dirname)
         path = path / dirname / chapter_filename(chapter_name)
 
-        images = []
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            for i, link in enumerate(image_links):
-                executor.submit(self._download_image, i, link, images)
+        if not os.path.exists(path):
+            images = []
+            with ThreadPoolExecutor(max_workers=5) as executor:
+                for i, link in enumerate(image_links):
+                    executor.submit(self._download_image, i, link, images)
 
-        images.sort(key=lambda x: x[0])
-        images = [image[1] for image in images]
-        images[0].save(path, save_all=True, quality=100, append_images=images[1:])
-        if paths != None:
-            paths[chapter_name] = str(path)
+            images.sort(key=lambda x: x[0])
+            images = [image[1] for image in images]
+            images[0].save(path, save_all=True, quality=100, append_images=images[1:])
+            if paths != None:
+                paths[chapter_name] = str(path)
         return path
 
     def download(self, manga_name, chapters, verbose=True):
