@@ -6,6 +6,7 @@ TODO:
 - Find a better way to handle provider string -> class
 - Allow referencing manga by index as well as title
 - Add __getitem__ on MM as shortcut for .manga
+- Add documentation for updated model classes
 """
 
 
@@ -39,13 +40,16 @@ class MangaManager:
         manga=None,
         manga_path=Path(__file__).parent / "manga",
         data_path=Path(__file__).parent / "config.json",
+        save=True
     ):
         self.data_path = data_path
         self.manga_path = manga_path
         self.manga = manga if manga else self.load()
+        self.save_data = save
 
     def load(self):
-        """Loads config from file"""
+        """Loads data from file"""
+
         data = None
         if not os.path.exists(self.data_path):
             open(self.data_path, "w").close()
@@ -59,18 +63,20 @@ class MangaManager:
             return data["manga"]
 
     def save(self):
-        """Saves config to file"""
-        try:
-            raw_data = {
-                "manga": {
-                    title: manga._to_dict() for title, manga in self.manga.items()
+        """Saves data to file"""
+
+        if self.save_data:
+            try:
+                raw_data = {
+                    "manga": {
+                        title: manga._to_dict() for title, manga in self.manga.items()
+                    }
                 }
-            }
-            data = json.dumps(raw_data)
-            with open(self.data_path, "w") as file:
-                file.write(data)
-        except Exception:
-            traceback.print_exc()
+                data = json.dumps(raw_data)
+                with open(self.data_path, "w") as file:
+                    file.write(data)
+            except Exception:
+                traceback.print_exc()
 
     def _update_chapter_paths(self, title, paths):
         """Updates paths in a manga's chapters"""
