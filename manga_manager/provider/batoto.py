@@ -48,3 +48,29 @@ class Batoto(Provider):
         #     event.set()
         #     thread.join()
         # return paths
+
+
+
+
+
+def search(self, word=1):
+    repsonse = requests.get(
+        requests.utils.requote_url(
+            f"https://bato.to/search?word={word}"
+        )
+    )
+    soup = BeautifulSoup(response.text, "html.parser")
+    results = soup.select("div.series-list > div.item")
+    titles = [result.select_one("div.item-text > a.item-title")]
+    info = [result.select("span") for result in results]
+    authors = [clean_text(i[0].text) for i in info]
+    updates = [clean_text(i[1].text) for i in info]
+    pages = int(
+        re.sub(
+            "[^0-9]",
+            "",
+            soup.select_one(
+                "body > "
+            )
+        )
+    )
