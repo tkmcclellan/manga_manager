@@ -1,7 +1,9 @@
 from manga_manager.provider.mangakakalot import Mangakakalot
+from manga_manager.provider.batoto import Batoto
 
 provider_dict = {
-    "Mangakakalot": Mangakakalot
+    "Mangakakalot": Mangakakalot,
+    "Batoto": Batoto
 }
 
 def find_provider(provider):

@@ -149,3 +149,6 @@ class TestManga_manager(unittest.TestCase):
         provider_mock.chapter_list.assert_called_with("https://fakelink.com/1")
         provider_mock.download.assert_called()
         find_provider_mock.assert_called_with("Mangakakalot")
+
+if __name__ == "__main__":
+    unittest.main()
