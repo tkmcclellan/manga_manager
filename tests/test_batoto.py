@@ -1,5 +1,6 @@
 import json
 import unittest
+import time
 from copy import deepcopy
 from pathlib import Path
 from unittest.mock import MagicMock, mock_open, patch
@@ -18,12 +19,29 @@ manga = {
         current_chapter=0,
         chapters=[
             Chapter(
-                title=f"Chapter {i}",
-                link=f"https://ww.mangakakalot.tv/chapter/kxqh9261558062112/chapter_{i}",
+                title=f"Chapter 1",
+                link="https://bato.to/chapter/376339",
                 path="",
                 read=False,
-            )
-            for i in range(20)
+            ),
+            Chapter(
+                title=f"Chapter 2",
+                link="https://bato.to/chapter/376344",
+                path="",
+                read=False,
+            ),
+            Chapter(
+                title=f"Chapter 3",
+                link="https://bato.to/chapter/376347",
+                path="",
+                read=False,
+            ),
+            Chapter(
+                title=f"Chapter 3",
+                link="https://bato.to/chapter/376351",
+                path="",
+                read=False,
+            ),
         ],
     ),
 }
@@ -51,16 +69,17 @@ class TestManga_manager_Batoto(unittest.TestCase):
 
     def test_batoto_download(self):
         provider = find_provider(self.provider_name)()
-        provider.download(
+        paths = provider.download(
             title=self.manga_title,
             chapters=self.manga[self.manga_title].chapters[:self.chapter_limit],
             dl_dir=self.manga_path / self.manga_title,
         )
+        print(paths)
 
-    def test_batoto_search(self):
-        provider = find_provider(self.provider_name)()
-        results, pages = provider.search()
-        print(results, pages)
+    # def test_batoto_search(self):
+    #     provider = find_provider(self.provider_name)()
+    #     results, pages = provider.search()
+    #     print(results, pages)
 
 if __name__ == "__main__":
     unittest.main()
