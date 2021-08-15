@@ -56,10 +56,7 @@ class TestManga_manager_Batoto(unittest.TestCase):
         self.chapter_limit = 2
         self.manga_path = Path(__file__).parent / "manga"
         self.manga = deepcopy(manga)
-        self.manager = MangaManager(
-            save=False,
-            manga=self.manga
-        )
+        self.provider = find_provider(self.provider_name)()
 
     def tearDown(self) -> None:
         return super().tearDown()
@@ -68,18 +65,20 @@ class TestManga_manager_Batoto(unittest.TestCase):
         find_provider(self.provider_name)()
 
     def test_batoto_download(self):
-        provider = find_provider(self.provider_name)()
-        paths = provider.download(
+        self.provider.download(
             title=self.manga_title,
             chapters=self.manga[self.manga_title].chapters[:self.chapter_limit],
             dl_dir=self.manga_path / self.manga_title,
         )
-        print(paths)
 
-    # def test_batoto_search(self):
-    #     provider = find_provider(self.provider_name)()
-    #     results, pages = provider.search()
-    #     print(results, pages)
+    def test_batoto_chapter_list(self):
+        chapters = self.provider.chapter_list(self.manga[self.manga_title].link)
+        print(chapters)
+
+    def test_batoto_search(self):
+        provider = find_provider(self.provider_name)()
+        results, pages = provider.search()
+        print(results, pages)
 
 if __name__ == "__main__":
     unittest.main()
