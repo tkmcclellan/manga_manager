@@ -14,7 +14,8 @@ requirements = [
     'fuzzywuzzy',
     'bs4',
     'requests',
-    'pillow'
+    'pillow',
+    'pyppeteer',
 ]
 
 setup_requirements = [ ]
