@@ -50,9 +50,6 @@ class Batoto(Provider):
         # return paths
 
 
-
-
-
 def search(self, word=1):
     repsonse = requests.get(
         requests.utils.requote_url(
